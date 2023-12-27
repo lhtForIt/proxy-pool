@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JacksonInject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -24,7 +26,7 @@ public class ProxyVerifier {
     private static final BlockingQueue<ProxyEntity> CACHED_PROXYS = new LinkedBlockingQueue<>(10000);
 
     private static final Logger logger = LoggerFactory.getLogger(ProxyVerifier.class);
-
+    public static List<ProxyEntity> list = new CopyOnWriteArrayList<>();
     private static boolean running = true;
 
     static {start();}
@@ -32,6 +34,7 @@ public class ProxyVerifier {
     public static void verify(ProxyEntity proxy) {
         try {
             FETCHED_PROXYS.put(proxy);
+            list.add(proxy);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -73,9 +76,17 @@ public class ProxyVerifier {
                     logger.info("verifying : " + proxy.getIp()+":"+proxy.getPort()+" in "+pName+", remaining: "+proxys.size());
 
                     boolean useful = ProxyUtil.verifyProxy(proxy);
-                    if (useful)
-                        ProxyRepository.getInstance().save(proxy);
-                    else ProxyRepository.getInstance().delete(proxy);
+                    if (useful){
+//                        ProxyRepository.getInstance().save(proxy);
+                        list.add(proxy);
+                        logger.info(proxy.toString());
+                    }
+                    else{
+//                        ProxyRepository.getInstance().delete(proxy);
+                        list.remove(proxy);
+                    }
+
+
                 } catch (InterruptedException e) {
                     logger.warn("exception when verifying proxy: " + e.getMessage());
                 }

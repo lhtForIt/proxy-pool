@@ -56,7 +56,7 @@ public class Www66IPFetcher extends AbstractFetcher<List<ProxyEntity>> {
         for (Element table : tables) {
             Elements trs = table.select("tr");
             if(trs == null)continue;
-            for (int i = 1; i < trs.size(); i++) {
+            for (int i = 1; i <= trs.size(); i++) {
                 Element tr = trs.get(i);
                 Elements tds = tr.select("td");
                 if (tds.size() != 5) continue;

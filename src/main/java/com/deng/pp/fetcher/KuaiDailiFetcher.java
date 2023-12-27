@@ -56,7 +56,7 @@ public class KuaiDailiFetcher extends AbstractFetcher<List<ProxyEntity>> {
             for(int i = 0; i < trs.size(); i++){
                 Element tr = trs.get(i);
                 Elements tds = tr.select("td");
-                if(tds.size() != 7)continue;
+                if(tds.size() != 8)continue;
 
                 /**
                  * <td data-title="IP">58.214.135.63</td>

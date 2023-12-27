@@ -19,11 +19,11 @@ import java.util.concurrent.TimeUnit;
 public class ApplicationBoot {
     private static final List<Scheduler> schedules = Arrays.asList(
             new FetchScheduler(30, TimeUnit.MINUTES),
-            new VerifyScheduler(10, TimeUnit.MINUTES)
+            new VerifyScheduler(1, TimeUnit.MINUTES)
     );
 
     public static void main(String[] args) {
-        SpringApplication.run(ApplicationBoot.class, args);
+//        SpringApplication.run(ApplicationBoot.class, args);
 
         for(Scheduler schedule : schedules)
             schedule.schedule();
